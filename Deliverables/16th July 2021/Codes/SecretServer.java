@@ -8,7 +8,6 @@ public class SecretServer {
  
 		String[] secret = {"ZERO", "ONE", "TWO", "THREE", "FOUR", "5", "6", "7"};
 
-
 		DatagramSocket ss = null;
 		DatagramPacket rp, sp;
 		byte[] rd, sd;
@@ -17,8 +16,9 @@ public class SecretServer {
 		int port;
  
 		try {
-			ss = new DatagramSocket(Integer.parseInt(args[0]));
-			System.out.println("Server is up....");
+			//ss = new DatagramSocket(Integer.parseInt(args[0]));  // Let's skip terminal args
+			ss = new DatagramSocket(10001);  // Set port to 10001
+			System.out.println("Server is up on Port 10001 ---");
 
 			int consignment=0;
 			String strGreeting;
