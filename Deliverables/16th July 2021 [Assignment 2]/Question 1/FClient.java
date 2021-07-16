@@ -10,12 +10,14 @@ RDT sequence_number payload CRLF, where
 the payload is a byte array of 512, and
 the sequence_number represents the consignment number and is an ascending number between 0 and 255 stored in 1 byte
 
+
+DONE-->
+*
+* [Last Packet]
 At the very last consignment, the message format is as follows:
 RDT sequence_number payload END CRLF
 In the last consignment, the payload is less than, or equals to 512 bytes.
-
-
-DONE-->
+* 
 * [Client Acknowledgement Format
 ACK sequence_number CRLF
 The sequence_number represents the consignment that the Client is expecting next, so it will be 1, 2, 3, 4, ... until the Client is notified of the last consignment.
@@ -51,7 +53,7 @@ public class FClient extends Thread{
 			int count=0;
 			boolean end = false;
 			
-			// write received data into demoText1.html
+			System.out.println("REQUEST_"+"demoText.html"+"_CRLF");
 			fos = new FileOutputStream("demoText1.html");
 
 			while(!end)
@@ -74,7 +76,7 @@ public class FClient extends Thread{
 			    System.out.println(reply);
 				fos.write(rp.getData());
 
-				if (reply.trim().equals("END")){ // if last consignment	
+				if (reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF")){ 				
 					ack = "ACK_" + 0 + "_CRLF + CLOSE TRANSMISSION";
 					sd=ack.getBytes();
 					sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),Integer.parseInt("10001"));

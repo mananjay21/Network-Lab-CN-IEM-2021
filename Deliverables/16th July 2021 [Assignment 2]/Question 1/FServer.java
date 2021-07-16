@@ -70,6 +70,7 @@ public class FServer {
 				port =rp.getPort();
 				System.out.println("Client IP Address = " + ip);
 				System.out.println("Client port = " + port);
+				System.out.println("REQUEST_"+"demoText.html"+"_CRLF");
 
 				strConsignment = new String(rp.getData());
 				System.out.println("CLIENT SENDS : "+(strConsignment));
@@ -83,7 +84,8 @@ public class FServer {
 				// prepare data
 				result = fis.read(sd);
 				if (result == -1) {
-					sd = new String("END").getBytes();
+					//sd = new String("END").getBytes(); //RDT sequence_number payload END CRLF
+					sd = new String("RDT_"+consignment+"_512_"+"END_"+"CRLF").getBytes(); //RDT sequence_number payload END CRLF					
 					consignment = -1;
 				}
 				sp=new DatagramPacket(sd,sd.length,ip,port);
