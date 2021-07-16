@@ -21,11 +21,11 @@ public class SecretClient {
 			{   	  
 				// send Greeting      
 			    sd=GREETING.getBytes();	 
-			    //sp=new DatagramPacket(sd,sd.length,InetAddress.getByName(args[0]),Integer.parseInt(args[1]));
-				sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),10001);  // Let's skip terminal args as localhost is default for the demo
-			    	 
+			    sp=new DatagramPacket(sd,sd.length, 
+									InetAddress.getByName(args[0]),
+  									Integer.parseInt(args[1]));	 
 				cs.send(sp);	
-				System.out.println("Sent Greeting");
+				System.out.println("sent Greeting");
 
 				// get next consignment
 				rd=new byte[512];

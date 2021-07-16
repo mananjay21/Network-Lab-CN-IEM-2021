@@ -2,29 +2,32 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
  
-public class SecretServer {
+public class FServer {
  
 	public static void main(String[] args) {
  
-		String[] secret = {"ZERO", "ONE", "TWO", "THREE", "FOUR", "5", "6", "7"};
-
 		DatagramSocket ss = null;
+		FileInputStream fis = null;
 		DatagramPacket rp, sp;
 		byte[] rd, sd;
 
 		InetAddress ip;
 		int port;
- 
+		
 		try {
-			//ss = new DatagramSocket(Integer.parseInt(args[0]));  // Let's skip terminal args
-			ss = new DatagramSocket(10001);  // Set port to 10001
-			System.out.println("Server is up on Port 10001 ---");
+			//ss = new DatagramSocket(Integer.parseInt(args[0])); Let's use static port binding
+			ss = new DatagramSocket(10001);
+			System.out.println("Server is up on Port : 10001");
 
-			int consignment=0;
-			String strGreeting;
+
+			// read file into buffer
+			fis = new FileInputStream("demoText.html");
+
+			int consignment;
+			String strConsignment;
 			int result = 0; // number of bytes read
 	 
-			while(true){
+			while(true && result!=-1){
 	 
 				rd=new byte[100];
 				sd=new byte[512];
@@ -39,34 +42,37 @@ public class SecretServer {
 				System.out.println("Client IP Address = " + ip);
 				System.out.println("Client port = " + port);
 
-				strGreeting = new String(rp.getData());
-				System.out.println("Client says = " + strGreeting);
+				strConsignment = new String(rp.getData());
+				consignment = Integer.parseInt(strConsignment.trim());
+				System.out.println("Client ACK = " + consignment);
 
 				// prepare data
-				if (consignment == secret.length) { // last consignment
+				result = fis.read(sd);
+				if (result == -1) {
 					sd = new String("END").getBytes();
-				} else {
-					sd = secret[consignment].getBytes();
+					consignment = -1;
 				}
 				sp=new DatagramPacket(sd,sd.length,ip,port);
 				 
-				// send data
 				ss.send(sp);
-				System.out.println("Sent Consignment #" + consignment);
-	 
+				 
 				rp=null;
 				sp = null;
 				 
-				if (consignment == secret.length) { 
-					consignment = 0; // reset consignment after last SECRET is delivered
-				} else {
-					consignment++;
-				}
+				System.out.println("Sent Consignment #" + consignment);
 	 
-			} // while true
-
+			}
+			
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
+
+		} finally {
+			try {
+				if (fis != null)
+					fis.close();
+			} catch (IOException ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 		
 	}
