@@ -10,9 +10,7 @@ public class FClient {
 		FileOutputStream fos = null;
 
 		try {
-
-	    	cs = new DatagramSocket();
-	 
+	    	cs = new DatagramSocket();	 
 			byte[] rd, sd;
 			String reply;
 			DatagramPacket sp,rp;
@@ -24,13 +22,13 @@ public class FClient {
 
 			while(!end)
 			{
-			    String ack = "" + count;
+			    //String ack = "" + count;
+			    String ack = "ACK" + count + "CRLF";
 			    	  
 				// send ACK      
 			    sd=ack.getBytes();	
-			    sp=new DatagramPacket(sd,sd.length, 
-									  InetAddress.getByName(args[0]),
-  									  Integer.parseInt(args[1]));	  
+			    //sp=new DatagramPacket(sd,sd.length,InetAddress.getByName(args[0]),Integer.parseInt(args[1]));
+			    sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),10001);	  
 				cs.send(sp);	
 
 				// get next consignment

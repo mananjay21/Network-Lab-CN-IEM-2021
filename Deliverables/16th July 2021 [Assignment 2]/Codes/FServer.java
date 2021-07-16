@@ -14,15 +14,17 @@ public class FServer {
 		InetAddress ip;
 		int port;
 		
-		try {
-			ss = new DatagramSocket(Integer.parseInt(args[0]));
+		try {			
+			
+			//ss = new DatagramSocket(Integer.parseInt(args[0]));
+			ss = new DatagramSocket(10001);
 			System.out.println("Server is up....");
-
-
+			while(true){
+			System.out.println("\nTRANSMISSION READY\n");
 			// read file into buffer
 			fis = new FileInputStream("demoText.html");
-
-			int consignment;
+			
+			int consignment=0;
 			String strConsignment;
 			int result = 0; // number of bytes read
 	 
@@ -43,6 +45,7 @@ public class FServer {
 
 				strConsignment = new String(rp.getData());
 				consignment = Integer.parseInt(strConsignment.trim());
+				
 				System.out.println("Client ACK = " + consignment);
 
 				// prepare data
@@ -61,19 +64,23 @@ public class FServer {
 				System.out.println("Sent Consignment #" + consignment);
 	 
 			}
-			
-		} catch (IOException ex) {
+		}
+		}
+
+		catch (IOException ex) {
 			System.out.println(ex.getMessage());
 
-		} finally {
+		}
+
+		finally {
 			try {
 				if (fis != null)
 					fis.close();
 			} catch (IOException ex) {
 				System.out.println(ex.getMessage());
 			}
-		}
+		} //End Finally
 		
-	}
+	} //End Main
 }
 
