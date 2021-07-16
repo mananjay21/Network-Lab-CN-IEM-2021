@@ -27,6 +27,19 @@ Negative ACK is not required.
 Requirements for Stop-and-Wait
 Time-Out = 30ms]
 
+FILESIZE = 400byes
+* 0 -> Request
+* 1 -> File
+* RDT_1_512 [512Byte]
+* 
+* 1024Bytes [512x2]
+* 0 -> Request
+* 1 -> File Part 1
+* 2 -> File Part 1
+* 
+* RDT_2_512 [512Byte]
+
+
 */
 
 
@@ -82,6 +95,7 @@ public class FClient extends Thread{
 					sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),Integer.parseInt("10001"));
 					cs.send(sp);			
 					end = true;
+					
 					try{Thread.sleep(500);}catch(InterruptedException e){System.out.println(e);}
 					System.out.println("Waited for 500MS");
 					System.exit(0);

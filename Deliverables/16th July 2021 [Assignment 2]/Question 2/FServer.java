@@ -40,7 +40,7 @@ public class FServer {
 			ss = new DatagramSocket(10001);
 			System.out.println("Server is up....");
 			while(true){
-				
+				ss.setSoTimeout(3000);
 			// read file into buffer
 			fis = new FileInputStream("demoText.html");
 			
