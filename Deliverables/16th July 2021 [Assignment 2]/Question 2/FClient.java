@@ -27,7 +27,6 @@ import java.util.*;
 public class FClient extends Thread{
  
 	public static void main(String[] args) {
-	 
 	    DatagramSocket cs = null;
 		FileOutputStream fos = null;
 
