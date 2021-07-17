@@ -49,7 +49,7 @@ public class FServer {
 			int result = 0; // number of bytes read
 	 
 			while(true && result!=-1){
-				ss.setSoTimeout(3000);
+				ss.setSoTimeout(3000); ////// Timeout on While True needs to be returned without stopping the code execution
 				rd=new byte[100];
 				sd=new byte[512];
 				 
@@ -98,9 +98,12 @@ public class FServer {
 			return;
 		}
 		
+				//catch (SocketTimeoutException ex) {		Skipping this will end the program when Request Times Out	
+	//		return;			I need the program to keep running on the event of a Timeout
+	//	}
+		
 		}
 
-			
 
 /*
 		finally {

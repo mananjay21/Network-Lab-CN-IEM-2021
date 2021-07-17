@@ -79,7 +79,9 @@ public class FClient extends Thread{
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
 
-		} finally {
+		}
+		
+		 finally {
 
 			try {
 				if (fos != null)
@@ -90,5 +92,8 @@ public class FClient extends Thread{
 				System.out.println(ex.getMessage());
 			}
 		}
+		
+		
+		
 	}
 }
