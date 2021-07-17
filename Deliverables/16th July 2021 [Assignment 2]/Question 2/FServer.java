@@ -90,9 +90,11 @@ public class FServer {
 						 
 						System.out.println("Sent Consignment #" + consignment);
 			 
-					}
-			}
-	}
+						}	//while(true && result!=-1)
+						
+					} //while(true)
+					
+			} //try
 
 			catch (IOException ex) {
 				System.out.println(ex.getMessage());
