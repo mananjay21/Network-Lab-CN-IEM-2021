@@ -30,16 +30,21 @@ public class FServer {
 		FileInputStream fis = null;
 		DatagramPacket rp, sp;
 		byte[] rd, sd;
+		int flag = 0;
+		int country = 0;
 
 		InetAddress ip;
 		int port;		
 					
 			try {
 				//ss = new DatagramSocket(Integer.parseInt(args[0]));
+				
 				ss = new DatagramSocket(10001);
-				ss.setSoTimeout(3000);
+				
 				System.out.println("Server is up....");
-				while(true){					
+				while(flag==0)
+				{
+									
 					fis = new FileInputStream("demoText.html");			
 					int consignment=0;
 					String strConsignment;
@@ -47,9 +52,12 @@ public class FServer {
 		 
 					while(true && result!=-1){
 						try{
-
+							
+						if (flag!=0){
+							ss.setSoTimeout(3000);
+						}
 						
-						ss.setSoTimeout(3000); ////// Timeout on While True needs to be returned without stopping the code execution
+						// ss.setSoTimeout(3000); ////// Timeout on While True needs to be returned without stopping the code execution
 						rd=new byte[100];
 						sd=new byte[512];
 						 
@@ -60,6 +68,7 @@ public class FServer {
 						ip = rp.getAddress(); 
 						port =rp.getPort();
 						
+						
 						{
 						System.out.println("Client IP Address = " + ip);
 						System.out.println("Client port = " + port);
@@ -67,6 +76,17 @@ public class FServer {
 						} // General Info Section
 						
 						strConsignment = new String(rp.getData());
+						String filter = strConsignment.trim();
+						System.out.println(filter);
+						if (filter.length()>14){
+							flag = 0;
+							System.out.println("Transmission is completed, no packets were dropped.");
+							System.exit(0);
+						}
+						else if(strConsignment!="ACK_0_CRLF + CLOSE TRANSMISSION"){
+							flag = 1;
+						}	
+							
 						System.out.println("CLIENT SENDS : "+(strConsignment));
 						String numberOnly= strConsignment.replaceAll("[^0-9]", ""); //EXTRA
 						
@@ -82,7 +102,10 @@ public class FServer {
 							//sd = new String("END").getBytes(); //RDT sequence_number payload END CRLF
 							sd = new String("RDT_"+consignment+"_512_"+"END_"+"CRLF").getBytes(); //RDT sequence_number payload END CRLF					
 							consignment = -1;
+							flag = 0;
 						}
+
+
 						
 						sp=new DatagramPacket(sd,sd.length,ip,port);						 
 						ss.send(sp);
