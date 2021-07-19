@@ -117,7 +117,9 @@ public class FServer {
 			 }
 
 			catch(SocketTimeoutException ex){
-				System.out.println("timeout");
+				System.out.println("Acknowledgement Timeout");
+				System.out.println("Resending Packet : "+consignment);
+				//return;
 			}
 			
 			
