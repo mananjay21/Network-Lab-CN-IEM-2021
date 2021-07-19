@@ -1,31 +1,19 @@
 /*
 
-General Protocol Requirements
-Client File Request Format
+Unfortunately, in the real-world, packets do get lost. 
+Consider the case where Frame 1 is lost in transit.  The Sender does not receive  the ACK within a specified time.
+Upon timeout, it remembers and re-sends Frame 1.
 
-REQUEST filename CRLF, with no spaces between REQUEST, filename and CRLF
-Server Message Format
+Up to now, the FServer waits for the next request in the receive blocking call.  We need to implement a timeout on the DatagramSocket - see Lab #9, Exercise #2
 
-RDT sequence_number payload CRLF, where 
-the payload is a byte array of 512, and
-the sequence_number represents the consignment number and is an ascending number between 0 and 255 stored in 1 byte
+        DatagramSocket cs = new DatagramSocket();
+        cs.setSoTimeout(3000); // set timeout to 3000ms
 
+In the exception handling of SocketTimeoutException, the FServer needs to re-send the frame that is lost.
 
-DONE-->
-*
-* [Last Packet]
-At the very last consignment, the message format is as follows:
-RDT sequence_number payload END CRLF
-In the last consignment, the payload is less than, or equals to 512 bytes.
-* 
-* [Client Acknowledgement Format
-ACK sequence_number CRLF
-The sequence_number represents the consignment that the Client is expecting next, so it will be 1, 2, 3, 4, ... until the Client is notified of the last consignment.
-Upon receiving the last consignment, the Client sends an ACK with sequence_number 0, waits for 500ms and terminates the connection.
-Negative ACK is not required.
+(a) Write the pseudo-code for the Sender.
 
-Requirements for Stop-and-Wait
-Time-Out = 30ms]
+(b) Implement the Stop-and-Wait ARQ with Lost Frame using RDT with Text File demoText.html.  Simulate the lost frames by having the FServer drop or not send them out (see PingServer from Lab #9, Exercise #2).  You may hard-code the frame(s) that will be lost, or use command-line parameters.  
 
 */
 
@@ -39,7 +27,6 @@ import java.util.*;
 public class FClient extends Thread{
  
 	public static void main(String[] args) {
-	 
 	    DatagramSocket cs = null;
 		FileOutputStream fos = null;
 
@@ -76,7 +63,8 @@ public class FClient extends Thread{
 			    System.out.println(reply);
 				fos.write(rp.getData());
 
-				if (reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF")){ 				
+				//if ((reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF"))&&count<5){
+				if ((reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF"))){ 			
 					ack = "ACK_" + 0 + "_CRLF + CLOSE TRANSMISSION";
 					sd=ack.getBytes();
 					sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),Integer.parseInt("10001"));
@@ -92,7 +80,9 @@ public class FClient extends Thread{
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
 
-		} finally {
+		}
+		
+		 finally {
 
 			try {
 				if (fos != null)
@@ -103,5 +93,8 @@ public class FClient extends Thread{
 				System.out.println(ex.getMessage());
 			}
 		}
+		
+		
+		
 	}
 }
