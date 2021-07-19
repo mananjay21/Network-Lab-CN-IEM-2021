@@ -37,16 +37,18 @@ public class FServer {
 			try {
 				//ss = new DatagramSocket(Integer.parseInt(args[0]));
 				ss = new DatagramSocket(10001);
+				ss.setSoTimeout(3000);
 				System.out.println("Server is up....");
-				while(true){
-					ss.setSoTimeout(3000);
-					// read file into buffer
+				while(true){					
 					fis = new FileInputStream("demoText.html");			
 					int consignment=0;
 					String strConsignment;
 					int result = 0; // number of bytes read
 		 
 					while(true && result!=-1){
+						try{
+
+						
 						ss.setSoTimeout(3000); ////// Timeout on While True needs to be returned without stopping the code execution
 						rd=new byte[100];
 						sd=new byte[512];
@@ -89,6 +91,13 @@ public class FServer {
 						sp = null;
 						 
 						System.out.println("Sent Consignment #" + consignment);
+			 }
+
+			catch(SocketTimeoutException ex){
+				System.out.println("timeout");
+			}
+			
+			
 			 
 						}	//while(true && result!=-1)
 						
