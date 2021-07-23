@@ -21,8 +21,29 @@ In the exception handling of SocketTimeoutException, the FServer needs to re-sen
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
  
 public class FServer {
+
+	    public static void printFileSizeNIO(String fileName) {
+
+        Path path = Paths.get(fileName);
+
+        try {
+
+            // size of a file (in bytes)
+            long bytes = Files.size(path);
+            System.out.println(String.format("FileSize : %d bytes", bytes));
+            System.out.println("Total Consignment After Chopping Up: "+ bytes/512);
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
  
 	public static void main(String[] args) {
  
@@ -32,6 +53,9 @@ public class FServer {
 		byte[] rd, sd;
 		int flag = 0;
 		int country = 0;
+		String filesize = "";
+		printFileSizeNIO("demoText.html");
+		int timex = 1;
 
 		InetAddress ip;
 		int port;		
@@ -52,7 +76,7 @@ public class FServer {
 		 
 					while(true && result!=-1){
 						try{
-							
+						System.out.println("Total Timeout Duration of Server : "+timex);	
 						if (flag!=0){
 							ss.setSoTimeout(3000);
 						}
@@ -117,7 +141,9 @@ public class FServer {
 			 }
 
 			catch(SocketTimeoutException ex){
+				System.out.println("Timeout Total Duration : "+timex);
 				System.out.println("timeout");
+				timex++;
 			}
 			
 			
