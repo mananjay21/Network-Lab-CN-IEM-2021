@@ -51,7 +51,7 @@ public class FClient extends Thread{
 			    	  
 				// send ACK      
 			    sd=ack.getBytes();	
-			    sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),Integer.parseInt("10001"));
+			    sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("192.168.70.118"),Integer.parseInt("10001"));
 			    cs.send(sp);	
 
 				// get next consignment
