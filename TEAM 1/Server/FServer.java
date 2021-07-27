@@ -2,7 +2,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
  
-public class FServer {
+public class FServer extends Thread {
  
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
