@@ -12,7 +12,8 @@ public class FClient extends Thread{
 		String MYIP = sc.nextLine();
 		System.out.println("Download <Filename.extension> : ");
 		String GETFILE = sc.nextLine();
-
+		System.out.println("Port Number : ");
+		int portx = sc.nextInt();
 		try {
 
 	    	cs = new DatagramSocket();
@@ -34,7 +35,7 @@ public class FClient extends Thread{
 			    	  
 				// send ACK      
 			    sd=ack.getBytes();	
-			    sp=new DatagramPacket(sd,sd.length,InetAddress.getByName(MYIP),Integer.parseInt("10001"));
+			    sp=new DatagramPacket(sd,sd.length,InetAddress.getByName(MYIP),portx);
 			    cs.send(sp);	
 
 				// get next consignment

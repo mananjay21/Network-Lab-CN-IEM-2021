@@ -11,6 +11,8 @@ public class FServer extends Thread {
 		DatagramSocket ss = null;
 		FileInputStream fis = null;
 		DatagramPacket rp, sp;
+		System.out.println("Port Number : ");
+		int portx = sc.nextInt();
 		byte[] rd, sd;
 		int flag = 0;
 		int country = 0;
@@ -21,7 +23,7 @@ public class FServer extends Thread {
 			try {
 				//ss = new DatagramSocket(Integer.parseInt(args[0]));
 				
-				ss = new DatagramSocket(10001);
+				ss = new DatagramSocket(portx);
 				
 				System.out.println("Server is up....");
 				while(flag==0)
