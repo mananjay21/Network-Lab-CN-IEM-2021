@@ -16,7 +16,7 @@ public class FServer {
 		
 		try {
 			//ss = new DatagramSocket(Integer.parseInt(args[0])); Let's use static port binding
-			ss = new DatagramSocket("PORT NU");
+			ss = new DatagramSocket(10001);
 			System.out.println("Server is up on Port : 10001");
 
 

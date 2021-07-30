@@ -51,7 +51,7 @@ public class FClient extends Thread{
 			    	  
 				// send ACK      
 			    sd=ack.getBytes();	
-			    sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("localhost"),Integer.parseInt("10001"));
+			    sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),Integer.parseInt("10001"));
 			    cs.send(sp);	
 
 				// get next consignment
@@ -64,8 +64,8 @@ public class FClient extends Thread{
 			    System.out.println(reply);
 				fos.write(rp.getData());
 
-				//if ((reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF"))&&count<5){
-				if ((reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF"))){ 			
+				if ((reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF"))&&count<5){
+				//if ((reply.trim().equals("RDT_"+count+"_512_"+"END_"+"CRLF"))){ 			
 					ack = "ACK_" + 0 + "_CRLF + CLOSE TRANSMISSION";
 					sd=ack.getBytes();
 					sp=new DatagramPacket(sd,sd.length,InetAddress.getByName("127.0.0.1"),Integer.parseInt("10001"));

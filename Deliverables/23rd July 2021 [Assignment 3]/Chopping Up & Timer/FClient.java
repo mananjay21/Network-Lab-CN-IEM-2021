@@ -1,3 +1,23 @@
+/*
+
+Unfortunately, in the real-world, packets do get lost. 
+Consider the case where Frame 1 is lost in transit.  The Sender does not receive  the ACK within a specified time.
+Upon timeout, it remembers and re-sends Frame 1.
+
+Up to now, the FServer waits for the next request in the receive blocking call.  We need to implement a timeout on the DatagramSocket - see Lab #9, Exercise #2
+
+        DatagramSocket cs = new DatagramSocket();
+        cs.setSoTimeout(3000); // set timeout to 3000ms
+
+In the exception handling of SocketTimeoutException, the FServer needs to re-send the frame that is lost.
+
+(a) Write the pseudo-code for the Sender.
+
+(b) Implement the Stop-and-Wait ARQ with Lost Frame using RDT with Text File demoText.html.  Simulate the lost frames by having the FServer drop or not send them out (see PingServer from Lab #9, Exercise #2).  You may hard-code the frame(s) that will be lost, or use command-line parameters.  
+
+*/
+
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
